@@ -1048,6 +1048,13 @@ void ORBextractor::operator()( InputArray _image, InputArray _mask, vector<KeyPo
 
     Mat image = _image.getMat();
     assert(image.type() == CV_8UC1 );
+     
+    /*
+    cv::Ptr<ORB> orb = ORB::create(nfeatures,scaleFactor,nlevels,EDGE_THRESHOLD);
+    orb->detect(image,_keypoints);
+    orb->compute(image,_keypoints,_descriptors);
+
+    */ 
 
     // Pre-compute the scale pyramid
     ComputePyramid(image);
@@ -1055,6 +1062,7 @@ void ORBextractor::operator()( InputArray _image, InputArray _mask, vector<KeyPo
     vector < vector<KeyPoint> > allKeypoints;
     ComputeKeyPointsOctTree(allKeypoints);
     //ComputeKeyPointsOld(allKeypoints);
+    
 
     Mat descriptors;
 
@@ -1100,8 +1108,11 @@ void ORBextractor::operator()( InputArray _image, InputArray _mask, vector<KeyPo
                 keypoint->pt *= scale;
         }
         // And add the keypoints to the output
+        
         _keypoints.insert(_keypoints.end(), keypoints.begin(), keypoints.end());
+       
     }
+     
 }
 
 void ORBextractor::ComputePyramid(cv::Mat image)
